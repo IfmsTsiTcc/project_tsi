@@ -25,7 +25,7 @@ app.use(cookieParser());
 // Configuração do CORS (caso necessário) - ajustada para permitir credenciais
 app.use((req, res, next) => {
     // Substitua o '*' pelo endereço do seu frontend
-    const allowedOrigin = 'https://regal-capybara-a3673f.netlify.app'; // Altere para o endereço correto do frontend
+    const allowedOrigin = 'http://localhost:3001'; // Altere para o endereço correto do frontend
     res.header("Access-Control-Allow-Origin", allowedOrigin); // Permite apenas o frontend específico
     res.header("Access-Control-Allow-Credentials", "true"); // Permite cookies e credenciais
     res.header(

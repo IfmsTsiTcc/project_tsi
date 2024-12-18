@@ -364,7 +364,7 @@ exports.postUsuarioLoginAluno = async (req, res, next) => {
 
             res.cookie('token', tokenJWT, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: process.env.JWT_KEY === 'production',
                 maxAge: 48 * 60 * 60 * 1000,
             });
 

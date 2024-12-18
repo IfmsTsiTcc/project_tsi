@@ -366,6 +366,7 @@ exports.postUsuarioLoginAluno = async (req, res, next) => {
                 httpOnly: true,
                 secure: process.env.JWT_KEY === 'production',
                 maxAge: 48 * 60 * 60 * 1000,
+                sameSite: 'None'
             });
 
             const userWithoutPassword = { ...resultResponseEmailUser[0], senha: undefined, token: tokenJWT };
@@ -451,6 +452,7 @@ exports.postUsuarioLoginAdm = async (req, res, next) => {
                 httpOnly: true,
                 secure: process.env.JWT_KEY === 'production', // Somente em produção, se HTTPS estiver habilitado
                 maxAge: 48 * 60 * 60 * 1000, // Expira em 48 horas
+                sameSite: 'None'
             });
 
             // Remover o campo 'senha' de cada objeto

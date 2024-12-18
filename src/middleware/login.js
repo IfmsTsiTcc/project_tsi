@@ -50,6 +50,7 @@ exports.opcionalLogin = (req, res, next) => {
       req.usuario = decoded;
 
       // Aqui você pode adicionar a lógica para verificar se o usuário existe no banco de dados
+      // Exemplo de verificação (se necessário):
       // const usuario = ... // lógica para verificar no banco de dados
 
       // Exemplo de verificação
@@ -67,6 +68,7 @@ exports.opcionalLogin = (req, res, next) => {
     next();
   } catch (error) {
     // Caso o token seja inválido ou não exista, apenas chama o próximo middleware
+    console.error("Erro no middleware opcionalLogin:", error.message);
     next();
   }
 };

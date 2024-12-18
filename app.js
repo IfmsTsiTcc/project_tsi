@@ -1,43 +1,31 @@
-require('dotenv').config();
+require('dotenv').config(); // Carrega variáveis de ambiente
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cookieParser = require('cookie-parser');  // Importando o cookie-parser
+const cookieParser = require('cookie-parser'); // Importa o cookie-parser
 const app = express();
 
-// Agora você pode acessar as variáveis de ambiente
-const pgsqlUser = process.env.PGSQL_USER;
-const pgsqlPassword = process.env.PGSQL_PASSWORD;
-const pgsqlDatabase = process.env.PGSQL_DATABASE;
-const pgsqlHost = process.env.PGSQL_HOST;
-const pgsqlPort = process.env.PGSQL_PORT;
-const jwtKey = process.env.JWT_KEY;
-const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
-
-// Importando as rotas
+// Importa as rotas
 const usuarioRoutes = require('./src/routes/usuario.routes.js');
 const pdfRoutes = require('./src/routes/pdf.routes.js');
 const cursosRoutes = require('./src/routes/curso.routes.js');
 const turmasRoutes = require('./src/routes/turma.routes.js');
 const camposRoutes = require('./src/routes/campos.routes.js');
 
-// Usando o morgan para logs
+// Middleware para logs de requisição (morgan)
 app.use(morgan('dev'));
 
-// Usando o body-parser para lidar com o corpo das requisições
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// Middleware para parsing do corpo das requisições
+app.use(bodyParser.urlencoded({ extended: false })); // Lida com dados enviados via formulário
+app.use(bodyParser.json()); // Lida com dados no formato JSON
 
-// Configuração do cookie-parser para trabalhar com cookies
+// Middleware para parsing de cookies
 app.use(cookieParser());
 
-// Configuração do CORS (caso necessário) - ajustada para permitir credenciais
+// Configuração do CORS (permite comunicação entre domínios diferentes)
 app.use((req, res, next) => {
-    // Substitua o '*' pelo endereço do seu frontend
-    const allowedOrigin = 'http://localhost:3001'; // Altere para o endereço correto do frontend
-    res.header("Access-Control-Allow-Origin", allowedOrigin); // Permite apenas o frontend específico
+    const allowedOrigin = 'http://localhost:3001'; // Altere para o endereço do frontend
+    res.header("Access-Control-Allow-Origin", allowedOrigin); // Permite requisições do frontend
     res.header("Access-Control-Allow-Credentials", "true"); // Permite cookies e credenciais
     res.header(
         "Access-Control-Allow-Headers",
@@ -50,14 +38,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// Defina suas rotas e configure o servidor Express
+// Definição das rotas da API
 app.use('/usuario', usuarioRoutes);
 app.use('/pdf', pdfRoutes);
 app.use('/cursos', cursosRoutes);
 app.use('/turmas', turmasRoutes);
 app.use('/campos', camposRoutes);
 
-// Middleware para tratamento de URL não encontrada
+// Middleware para tratar URLs não encontradas
 app.use((req, res, next) => {
     const error = new Error("Url não encontrada, tente novamente");
     error.status = 404;
@@ -74,4 +62,5 @@ app.use((error, req, res, next) => {
     });
 });
 
+// Exporta o app para uso no servidor principal
 module.exports = app;
